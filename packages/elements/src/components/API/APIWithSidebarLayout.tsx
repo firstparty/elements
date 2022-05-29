@@ -45,7 +45,9 @@ export const APIWithSidebarLayout: React.FC<SidebarLayoutProps> = ({
   const location = useLocation();
   const { pathname } = location;
   const isRootPath = !pathname || pathname === '/';
-  const node = isRootPath ? serviceNode : serviceNode.children.find(child => child.uri === pathname);
+  const node = isRootPath
+    ? serviceNode
+    : serviceNode.children.find(child => child.uri === pathname || child.uri + '/' === pathname);
 
   const layoutOptions = React.useMemo(
     () => ({ hideTryIt: hideTryIt, hideExport: hideExport || node?.type !== NodeType.HttpService }),

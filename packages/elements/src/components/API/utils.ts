@@ -89,8 +89,8 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
         return;
       }
       tree.push({
-        id: operationNode.uri,
-        slug: operationNode.uri,
+        id: operationNode.uri + '/',
+        slug: operationNode.uri + '/',
         title: operationNode.name,
         type: operationNode.type,
         meta: operationNode.data.method,
@@ -103,8 +103,8 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
           return [];
         }
         return {
-          id: operationNode.uri,
-          slug: operationNode.uri,
+          id: operationNode.uri + '/',
+          slug: operationNode.uri + '/',
           title: operationNode.name,
           type: operationNode.type,
           meta: operationNode.data.method,
@@ -131,8 +131,8 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
 
     schemaNodes.forEach(node => {
       tree.push({
-        id: node.uri,
-        slug: node.uri,
+        id: node.uri + '/',
+        slug: node.uri + '/',
         title: node.name,
         type: node.type,
         meta: '',
