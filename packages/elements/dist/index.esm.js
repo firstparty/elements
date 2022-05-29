@@ -84,8 +84,8 @@ const computeAPITree = (serviceNode, config = {}) => {
                 return;
             }
             tree.push({
-                id: operationNode.uri,
-                slug: operationNode.uri,
+                id: operationNode.uri + '/',
+                slug: operationNode.uri + '/',
                 title: operationNode.name,
                 type: operationNode.type,
                 meta: operationNode.data.method,
@@ -97,8 +97,8 @@ const computeAPITree = (serviceNode, config = {}) => {
                     return [];
                 }
                 return {
-                    id: operationNode.uri,
-                    slug: operationNode.uri,
+                    id: operationNode.uri + '/',
+                    slug: operationNode.uri + '/',
                     title: operationNode.name,
                     type: operationNode.type,
                     meta: operationNode.data.method,
@@ -122,8 +122,8 @@ const computeAPITree = (serviceNode, config = {}) => {
         });
         schemaNodes.forEach(node => {
             tree.push({
-                id: node.uri,
-                slug: node.uri,
+                id: node.uri + '/',
+                slug: node.uri + '/',
                 title: node.name,
                 type: node.type,
                 meta: '',
@@ -163,7 +163,9 @@ const APIWithSidebarLayout = ({ serviceNode, logo, hideTryIt, hideSchemas, hideI
     const location = useLocation();
     const { pathname } = location;
     const isRootPath = !pathname || pathname === '/';
-    const node = isRootPath ? serviceNode : serviceNode.children.find(child => child.uri === pathname);
+    const node = isRootPath
+        ? serviceNode
+        : serviceNode.children.find(child => child.uri === pathname || child.uri + '/' === pathname);
     const layoutOptions = React.useMemo(() => ({ hideTryIt: hideTryIt, hideExport: hideExport || (node === null || node === void 0 ? void 0 : node.type) !== NodeType.HttpService }), [hideTryIt, hideExport, node]);
     if (!node) {
         const firstSlug = findFirstNodeSlug(tree);

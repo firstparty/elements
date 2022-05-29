@@ -2976,6 +2976,7 @@ exports.ParsedDocs = ParsedDocs;
 exports.PersistenceContextProvider = PersistenceContextProvider;
 exports.PoweredByLink = PoweredByLink;
 exports.ReactRouterMarkdownLink = ReactRouterMarkdownLink;
+exports.RequestSamples = RequestSamples;
 exports.SidebarLayout = SidebarLayout;
 exports.Styled = Styled;
 exports.TableOfContents = TableOfContents;

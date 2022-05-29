@@ -11,6 +11,7 @@ export { CustomLinkComponent, TableOfContentsItem, TableOfContentsNode, TableOfC
 export { findFirstNode } from './components/MosaicTableOfContents/utils';
 export { NonIdealState } from './components/NonIdealState';
 export { PoweredByLink } from './components/PoweredByLink';
+export { RequestSamples } from './components/RequestSamples';
 export { TryIt, TryItProps, TryItWithRequestSamples, TryItWithRequestSamplesProps } from './components/TryIt';
 export { HttpMethodColors, NodeTypeColors, NodeTypeIconDefs, NodeTypePrettyName } from './constants';
 export { MockingProvider } from './containers/MockingProvider';
