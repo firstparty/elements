@@ -104,7 +104,7 @@ function computeChildNodes(
 
         nodes.push({
           type: NodeType.HttpOperation,
-          uri: parsedUri,
+          uri: parsedUri + '/',
           data: operationDocument,
           name: operationDocument.summary || operationDocument.iid || operationDocument.path,
           tags: operationDocument.tags?.map(tag => tag.name) || [],
@@ -115,7 +115,7 @@ function computeChildNodes(
 
         nodes.push({
           type: NodeType.Model,
-          uri: parsedUri,
+          uri: parsedUri + '/',
           data: schemaDocument,
           name: schemaDocument.title || last(uri.split('/')) || '',
           tags: schemaDocument['x-tags'] || [],

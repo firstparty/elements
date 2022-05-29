@@ -117,8 +117,8 @@ const computeAPITree = (serviceNode, config = {}) => {
                 return;
             }
             tree.push({
-                id: operationNode.uri + '/',
-                slug: operationNode.uri + '/',
+                id: operationNode.uri,
+                slug: operationNode.uri,
                 title: operationNode.name,
                 type: operationNode.type,
                 meta: operationNode.data.method,
@@ -130,8 +130,8 @@ const computeAPITree = (serviceNode, config = {}) => {
                     return [];
                 }
                 return {
-                    id: operationNode.uri + '/',
-                    slug: operationNode.uri + '/',
+                    id: operationNode.uri,
+                    slug: operationNode.uri,
                     title: operationNode.name,
                     type: operationNode.type,
                     meta: operationNode.data.method,
@@ -155,8 +155,8 @@ const computeAPITree = (serviceNode, config = {}) => {
         });
         schemaNodes.forEach(node => {
             tree.push({
-                id: node.uri + '/',
-                slug: node.uri + '/',
+                id: node.uri,
+                slug: node.uri,
                 title: node.name,
                 type: node.type,
                 meta: '',
@@ -440,7 +440,7 @@ function computeChildNodes(document, data, map, transformer, parentUri = '') {
                 }
                 nodes.push({
                     type: types.NodeType.HttpOperation,
-                    uri: parsedUri,
+                    uri: parsedUri + '/',
                     data: operationDocument,
                     name: operationDocument.summary || operationDocument.iid || operationDocument.path,
                     tags: ((_a = operationDocument.tags) === null || _a === void 0 ? void 0 : _a.map(tag => tag.name)) || [],
@@ -451,7 +451,7 @@ function computeChildNodes(document, data, map, transformer, parentUri = '') {
                 const parsedUri = uri.replace(OAS_MODEL_REGEXP, 'schemas/');
                 nodes.push({
                     type: types.NodeType.Model,
-                    uri: parsedUri,
+                    uri: parsedUri + '/',
                     data: schemaDocument,
                     name: schemaDocument.title || last__default["default"](uri.split('/')) || '',
                     tags: schemaDocument['x-tags'] || [],
