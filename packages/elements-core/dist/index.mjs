@@ -2561,7 +2561,7 @@ function isExternalLink(item) {
 
 const ActiveIdContext = React.createContext(undefined);
 const LinkContext = React.createContext(undefined);
-const TableOfContents = React.memo(({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick }) => {
+const TableOfContents = React.memo(({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick, listDecoration = true }) => {
     const container = React.useRef(null);
     const child = React.useRef(null);
     React.useEffect(() => {
@@ -2581,13 +2581,13 @@ const TableOfContents = React.memo(({ tree, activeId, Link, maxDepthOpenByDefaul
                     if (isDivider(item)) {
                         return React.createElement(Divider, { key: key, item: item });
                     }
-                    return (React.createElement(GroupItem, { key: key, item: item, depth: 0, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick }));
+                    return (React.createElement(GroupItem, { key: key, item: item, depth: 0, listDecoration: listDecoration, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick }));
                 }))))));
 });
 const Divider = React.memo(({ item }) => {
     return (React.createElement(Box, { pl: 4, mb: 2, mt: 6, textTransform: "uppercase", fontSize: "sm", lineHeight: "relaxed", letterSpacing: "wide", fontWeight: "bold" }, item.title));
 });
-const GroupItem = React.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick }) => {
+const GroupItem = React.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick, listDecoration = true }) => {
     if (isExternalLink(item)) {
         return (React.createElement(Box, { as: "a", href: item.url, target: "_blank", rel: "noopener noreferrer", display: "block" },
             React.createElement(Item, { depth: depth, title: item.title, meta: React.createElement(Box, { as: Icon, icon: ['fas', 'external-link'] }) })));
@@ -2596,9 +2596,10 @@ const GroupItem = React.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick 
         return React.createElement(Group, { depth: depth, item: item, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick });
     }
     else if (isNode(item)) {
-        return (React.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: item.meta ? (React.createElement(Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React.createElement(Flex, { alignItems: "center" },
-                item.version && React.createElement(Version, { value: item.version }),
-                React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) }));
+        return (React.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: listDecoration ?
+                item.meta ? (React.createElement(Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React.createElement(Flex, { alignItems: "center" },
+                    item.version && React.createElement(Version, { value: item.version }),
+                    React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) : "" }));
     }
     return null;
 });

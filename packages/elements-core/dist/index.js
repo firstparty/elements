@@ -2615,7 +2615,7 @@ function isExternalLink(item) {
 
 const ActiveIdContext = React__namespace.createContext(undefined);
 const LinkContext = React__namespace.createContext(undefined);
-const TableOfContents = React__namespace.memo(({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick }) => {
+const TableOfContents = React__namespace.memo(({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick, listDecoration = true }) => {
     const container = React__namespace.useRef(null);
     const child = React__namespace.useRef(null);
     React__namespace.useEffect(() => {
@@ -2635,13 +2635,13 @@ const TableOfContents = React__namespace.memo(({ tree, activeId, Link, maxDepthO
                     if (isDivider(item)) {
                         return React__namespace.createElement(Divider, { key: key, item: item });
                     }
-                    return (React__namespace.createElement(GroupItem, { key: key, item: item, depth: 0, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick }));
+                    return (React__namespace.createElement(GroupItem, { key: key, item: item, depth: 0, listDecoration: listDecoration, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick }));
                 }))))));
 });
 const Divider = React__namespace.memo(({ item }) => {
     return (React__namespace.createElement(mosaic.Box, { pl: 4, mb: 2, mt: 6, textTransform: "uppercase", fontSize: "sm", lineHeight: "relaxed", letterSpacing: "wide", fontWeight: "bold" }, item.title));
 });
-const GroupItem = React__namespace.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick }) => {
+const GroupItem = React__namespace.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick, listDecoration = true }) => {
     if (isExternalLink(item)) {
         return (React__namespace.createElement(mosaic.Box, { as: "a", href: item.url, target: "_blank", rel: "noopener noreferrer", display: "block" },
             React__namespace.createElement(Item, { depth: depth, title: item.title, meta: React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, icon: ['fas', 'external-link'] }) })));
@@ -2650,9 +2650,10 @@ const GroupItem = React__namespace.memo(({ item, depth, maxDepthOpenByDefault, o
         return React__namespace.createElement(Group, { depth: depth, item: item, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick });
     }
     else if (isNode(item)) {
-        return (React__namespace.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: item.meta ? (React__namespace.createElement(mosaic.Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React__namespace.createElement(mosaic.Flex, { alignItems: "center" },
-                item.version && React__namespace.createElement(Version, { value: item.version }),
-                React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) }));
+        return (React__namespace.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: listDecoration ?
+                item.meta ? (React__namespace.createElement(mosaic.Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React__namespace.createElement(mosaic.Flex, { alignItems: "center" },
+                    item.version && React__namespace.createElement(Version, { value: item.version }),
+                    React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) : "" }));
     }
     return null;
 });

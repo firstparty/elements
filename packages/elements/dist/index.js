@@ -269,7 +269,7 @@ const APIWithSidebarLayout = ({ serviceNode, logo, hideTryIt, hideSchemas, hideI
             logo ? (React__namespace.createElement(elementsCore.Logo, { logo: { url: logo, altText: 'logo' } })) : (serviceNode.data.logo && React__namespace.createElement(elementsCore.Logo, { logo: serviceNode.data.logo })),
             React__namespace.createElement(mosaic.Heading, { size: 4 }, serviceNode.name)),
         React__namespace.createElement(mosaic.Flex, { flexGrow: true, flexShrink: true, overflowY: "auto", direction: "col" },
-            React__namespace.createElement(elementsCore.TableOfContents, { tree: tree, activeId: pathname, Link: reactRouterDom.Link, onLinkClick: handleTocClick })),
+            React__namespace.createElement(elementsCore.TableOfContents, { tree: tree, activeId: pathname, Link: reactRouterDom.Link, onLinkClick: handleTocClick, listDecoration: false })),
         React__namespace.createElement(elementsCore.PoweredByLink, { source: serviceNode.name, pathname: pathname, packageType: "elements" })));
     return (React__namespace.createElement(elementsCore.SidebarLayout, { ref: container, sidebar: sidebar }, node && (React__namespace.createElement(elementsCore.ParsedDocs, { key: pathname, uri: pathname, node: node, nodeTitle: node.name, layoutOptions: layoutOptions, location: location, exportProps: exportProps, tryItCredentialsPolicy: tryItCredentialsPolicy, tryItCorsProxy: tryItCorsProxy }))));
 };

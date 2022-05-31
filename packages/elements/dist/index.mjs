@@ -236,7 +236,7 @@ const APIWithSidebarLayout = ({ serviceNode, logo, hideTryIt, hideSchemas, hideI
             logo ? (React.createElement(Logo, { logo: { url: logo, altText: 'logo' } })) : (serviceNode.data.logo && React.createElement(Logo, { logo: serviceNode.data.logo })),
             React.createElement(Heading, { size: 4 }, serviceNode.name)),
         React.createElement(Flex, { flexGrow: true, flexShrink: true, overflowY: "auto", direction: "col" },
-            React.createElement(TableOfContents, { tree: tree, activeId: pathname, Link: Link, onLinkClick: handleTocClick })),
+            React.createElement(TableOfContents, { tree: tree, activeId: pathname, Link: Link, onLinkClick: handleTocClick, listDecoration: false })),
         React.createElement(PoweredByLink, { source: serviceNode.name, pathname: pathname, packageType: "elements" })));
     return (React.createElement(SidebarLayout, { ref: container, sidebar: sidebar }, node && (React.createElement(ParsedDocs, { key: pathname, uri: pathname, node: node, nodeTitle: node.name, layoutOptions: layoutOptions, location: location, exportProps: exportProps, tryItCredentialsPolicy: tryItCredentialsPolicy, tryItCorsProxy: tryItCorsProxy }))));
 };

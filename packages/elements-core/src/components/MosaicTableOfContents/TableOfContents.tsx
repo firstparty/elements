@@ -26,7 +26,7 @@ const ActiveIdContext = React.createContext<string | undefined>(undefined);
 const LinkContext = React.createContext<CustomLinkComponent | undefined>(undefined);
 
 export const TableOfContents = React.memo<TableOfContentsProps>(
-  ({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick }) => {
+  ({ tree, activeId, Link, maxDepthOpenByDefault, externalScrollbar = false, onLinkClick, listDecoration = true }) => {
     const container = React.useRef<HTMLDivElement>(null);
     const child = React.useRef<HTMLDivElement>(null);
 
@@ -60,6 +60,7 @@ export const TableOfContents = React.memo<TableOfContentsProps>(
                     key={key}
                     item={item}
                     depth={0}
+                    listDecoration={listDecoration}
                     maxDepthOpenByDefault={maxDepthOpenByDefault}
                     onLinkClick={onLinkClick}
                   />
@@ -97,7 +98,8 @@ const GroupItem = React.memo<{
   item: TableOfContentsGroupItem;
   maxDepthOpenByDefault?: number;
   onLinkClick?(): void;
-}>(({ item, depth, maxDepthOpenByDefault, onLinkClick }) => {
+  listDecoration?: boolean;
+}>(({ item, depth, maxDepthOpenByDefault, onLinkClick, listDecoration = true }) => {
   if (isExternalLink(item)) {
     return (
       <Box as="a" href={item.url} target="_blank" rel="noopener noreferrer" display="block">
@@ -113,17 +115,21 @@ const GroupItem = React.memo<{
         item={item}
         onLinkClick={onLinkClick}
         meta={
-          item.meta ? (
-            <Box color={NODE_META_COLOR[item.meta]} textTransform="uppercase" fontWeight="medium">
-              {item.meta}
-            </Box>
-          ) : (
-            NODE_TYPE_META_ICON[item.type] && (
-              <Flex alignItems="center">
-                {item.version && <Version value={item.version} />}
-                <Box as={Icon} color={NODE_TYPE_ICON_COLOR[item.type]} icon={NODE_TYPE_META_ICON[item.type]} />
-              </Flex>
+          listDecoration ? (
+            item.meta ? (
+              <Box color={NODE_META_COLOR[item.meta]} textTransform="uppercase" fontWeight="medium">
+                {item.meta}
+              </Box>
+            ) : (
+              NODE_TYPE_META_ICON[item.type] && (
+                <Flex alignItems="center">
+                  {item.version && <Version value={item.version} />}
+                  <Box as={Icon} color={NODE_TYPE_ICON_COLOR[item.type]} icon={NODE_TYPE_META_ICON[item.type]} />
+                </Flex>
+              )
             )
+          ) : (
+            ''
           )
         }
       />

@@ -84,7 +84,13 @@ export const APIWithSidebarLayout: React.FC<SidebarLayoutProps> = ({
         <Heading size={4}>{serviceNode.name}</Heading>
       </Flex>
       <Flex flexGrow flexShrink overflowY="auto" direction="col">
-        <TableOfContents tree={tree} activeId={pathname} Link={Link} onLinkClick={handleTocClick} />
+        <TableOfContents
+          tree={tree}
+          activeId={pathname}
+          Link={Link}
+          onLinkClick={handleTocClick}
+          listDecoration={false}
+        />
       </Flex>
       <PoweredByLink source={serviceNode.name} pathname={pathname} packageType="elements" />
     </>
