@@ -13,8 +13,10 @@ export const computeTagGroups = (serviceNode: ServiceNode) => {
   const lowerCaseServiceTags = serviceNode.tags.map(tn => tn.toLowerCase());
 
   for (const node of serviceNode.children) {
-    if (node.type !== NodeType.HttpOperation) continue;
+    if (node.type !== NodeType.HttpOperation && node.type !== NodeType.Model) continue;
     const tagName = node.tags[0];
+
+    if (node.type === NodeType.Model && !tagName) continue;
 
     if (tagName) {
       const tagId = tagName.toLowerCase();
@@ -28,6 +30,11 @@ export const computeTagGroups = (serviceNode: ServiceNode) => {
           items: [node],
         };
       }
+
+      // now sort the group so that it has the model inside
+      groupsByTagId[tagId].items = Object.values(groupsByTagId[tagId].items).sort((first, second) => {
+        return first.type === NodeType.Model ? -1 : 1;
+      });
     } else {
       ungrouped.push(node);
     }
