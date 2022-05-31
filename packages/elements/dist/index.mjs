@@ -126,7 +126,9 @@ const computeAPITree = (serviceNode, config = {}) => {
         tree.push({
             title: 'Endpoints',
         });
-        const { groups, ungrouped } = config.groupModels ? computeTagGroupsWithModels(serviceNode) : computeTagGroups(serviceNode);
+        const { groups, ungrouped } = config.groupModels
+            ? computeTagGroupsWithModels(serviceNode)
+            : computeTagGroups(serviceNode);
         ungrouped.forEach(operationNode => {
             if (operationNode.type === NodeType.Model || (mergedConfig.hideInternal && operationNode.data.internal)) {
                 return;
@@ -136,7 +138,7 @@ const computeAPITree = (serviceNode, config = {}) => {
                 slug: operationNode.uri,
                 title: operationNode.name,
                 type: operationNode.type,
-                meta: operationNode.data.method,
+                meta: mergedConfig.noMeta ? '' : operationNode.data.method,
             });
         });
         groups.forEach(group => {
@@ -149,7 +151,7 @@ const computeAPITree = (serviceNode, config = {}) => {
                     slug: operationNode.uri,
                     title: operationNode.name,
                     type: operationNode.type,
-                    meta: operationNode.type === NodeType.Model ? "" : operationNode.data.method,
+                    meta: mergedConfig.noMeta ? '' : operationNode.type === NodeType.Model ? '' : operationNode.data.method,
                 };
             });
             if (items.length > 0) {
@@ -207,7 +209,7 @@ const isInternal = (node) => {
 
 const APIWithSidebarLayout = ({ serviceNode, logo, hideTryIt, hideSchemas, hideInternal, hideExport, exportProps, tryItCredentialsPolicy, tryItCorsProxy, }) => {
     const container = React.useRef(null);
-    const tree = React.useMemo(() => computeAPITree(serviceNode, { hideSchemas, hideInternal, groupModels: true }), [serviceNode, hideSchemas, hideInternal]);
+    const tree = React.useMemo(() => computeAPITree(serviceNode, { hideSchemas, hideInternal, groupModels: true, noMeta: true }), [serviceNode, hideSchemas, hideInternal]);
     const location = useLocation();
     const { pathname } = location;
     const isRootPath = !pathname || pathname === '/';

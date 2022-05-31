@@ -112,6 +112,7 @@ interface ComputeAPITreeConfig {
   hideSchemas?: boolean;
   hideInternal?: boolean;
   groupModels?: boolean;
+  noMeta?: boolean;
 }
 
 const defaultComputerAPITreeConfig = {
@@ -151,7 +152,7 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
         slug: operationNode.uri,
         title: operationNode.name,
         type: operationNode.type,
-        meta: operationNode.data.method,
+        meta: mergedConfig.noMeta ? '' : operationNode.data.method,
       });
     });
 
@@ -165,7 +166,7 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
           slug: operationNode.uri,
           title: operationNode.name,
           type: operationNode.type,
-          meta: operationNode.type === NodeType.Model ? '' : operationNode.data.method,
+          meta: mergedConfig.noMeta ? '' : operationNode.type === NodeType.Model ? '' : operationNode.data.method,
         };
       });
       if (items.length > 0) {

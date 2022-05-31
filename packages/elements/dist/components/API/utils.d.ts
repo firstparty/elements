@@ -20,6 +20,7 @@ interface ComputeAPITreeConfig {
     hideSchemas?: boolean;
     hideInternal?: boolean;
     groupModels?: boolean;
+    noMeta?: boolean;
 }
 export declare const computeAPITree: (serviceNode: ServiceNode, config?: ComputeAPITreeConfig) => TableOfContentsItem[];
 export declare const findFirstNodeSlug: (tree: TableOfContentsItem[]) => string | void;
