@@ -92,6 +92,54 @@ const computeTagGroups = (serviceNode) => {
         .map(([, tagGroup]) => tagGroup);
     return { groups: orderedTagGroups, ungrouped };
 };
+const computeTagGroupsWithModels = (serviceNode) => {
+    const groupsByTagId = {};
+    const ungrouped = [];
+    const lowerCaseServiceTags = serviceNode.tags.map(tn => tn.toLowerCase());
+    for (const node of serviceNode.children) {
+        if (node.type !== types.NodeType.HttpOperation && node.type !== types.NodeType.Model)
+            continue;
+        const tagName = node.tags[0];
+        if (node.type === types.NodeType.Model && !tagName)
+            continue;
+        if (tagName) {
+            const tagId = tagName.toLowerCase();
+            if (groupsByTagId[tagId]) {
+                groupsByTagId[tagId].items.push(node);
+            }
+            else {
+                const serviceTagIndex = lowerCaseServiceTags.findIndex(tn => tn === tagId);
+                const serviceTagName = serviceNode.tags[serviceTagIndex];
+                groupsByTagId[tagId] = {
+                    title: serviceTagName || tagName,
+                    items: [node],
+                };
+            }
+            groupsByTagId[tagId].items = Object.values(groupsByTagId[tagId].items).sort((first, second) => {
+                return first.type === types.NodeType.Model ? -1 : 1;
+            });
+        }
+        else {
+            ungrouped.push(node);
+        }
+    }
+    const orderedTagGroups = Object.entries(groupsByTagId)
+        .sort(([g1], [g2]) => {
+        const g1LC = g1.toLowerCase();
+        const g2LC = g2.toLowerCase();
+        const g1Idx = lowerCaseServiceTags.findIndex(tn => tn === g1LC);
+        const g2Idx = lowerCaseServiceTags.findIndex(tn => tn === g2LC);
+        if (g1Idx < 0 && g2Idx < 0)
+            return 0;
+        if (g1Idx < 0)
+            return 1;
+        if (g2Idx < 0)
+            return -1;
+        return g1Idx - g2Idx;
+    })
+        .map(([, tagGroup]) => tagGroup);
+    return { groups: orderedTagGroups, ungrouped };
+};
 const defaultComputerAPITreeConfig = {
     hideSchemas: false,
     hideInternal: false,
@@ -111,9 +159,9 @@ const computeAPITree = (serviceNode, config = {}) => {
         tree.push({
             title: 'Endpoints',
         });
-        const { groups, ungrouped } = computeTagGroups(serviceNode);
+        const { groups, ungrouped } = config.groupModels ? computeTagGroupsWithModels(serviceNode) : computeTagGroups(serviceNode);
         ungrouped.forEach(operationNode => {
-            if (mergedConfig.hideInternal && operationNode.data.internal) {
+            if (operationNode.type === types.NodeType.Model || (mergedConfig.hideInternal && operationNode.data.internal)) {
                 return;
             }
             tree.push({
@@ -126,7 +174,7 @@ const computeAPITree = (serviceNode, config = {}) => {
         });
         groups.forEach(group => {
             const items = group.items.flatMap(operationNode => {
-                if (mergedConfig.hideInternal && operationNode.data.internal) {
+                if (mergedConfig.hideInternal && operationNode.type === types.NodeType.HttpOperation && operationNode.data.internal) {
                     return [];
                 }
                 return {
@@ -134,7 +182,7 @@ const computeAPITree = (serviceNode, config = {}) => {
                     slug: operationNode.uri,
                     title: operationNode.name,
                     type: operationNode.type,
-                    meta: operationNode.data.method,
+                    meta: operationNode.type === types.NodeType.Model ? "" : operationNode.data.method,
                 };
             });
             if (items.length > 0) {
@@ -192,7 +240,7 @@ const isInternal = (node) => {
 
 const APIWithSidebarLayout = ({ serviceNode, logo, hideTryIt, hideSchemas, hideInternal, hideExport, exportProps, tryItCredentialsPolicy, tryItCorsProxy, }) => {
     const container = React__namespace.useRef(null);
-    const tree = React__namespace.useMemo(() => computeAPITree(serviceNode, { hideSchemas, hideInternal }), [serviceNode, hideSchemas, hideInternal]);
+    const tree = React__namespace.useMemo(() => computeAPITree(serviceNode, { hideSchemas, hideInternal, groupModels: true }), [serviceNode, hideSchemas, hideInternal]);
     const location = reactRouterDom.useLocation();
     const { pathname } = location;
     const isRootPath = !pathname || pathname === '/';

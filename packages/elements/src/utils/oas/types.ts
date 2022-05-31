@@ -29,3 +29,4 @@ export type ServiceNode = Node<NodeType.HttpService, IHttpService> & { children:
 export type ServiceChildNode = OperationNode | SchemaNode;
 export type OperationNode = Node<NodeType.HttpOperation, IHttpOperation>;
 export type SchemaNode = Node<NodeType.Model, JSONSchema7>;
+export type GroupNode = OperationNode | SchemaNode;

@@ -27,4 +27,5 @@ export declare type ServiceNode = Node<NodeType.HttpService, IHttpService> & {
 export declare type ServiceChildNode = OperationNode | SchemaNode;
 export declare type OperationNode = Node<NodeType.HttpOperation, IHttpOperation>;
 export declare type SchemaNode = Node<NodeType.Model, JSONSchema7>;
+export declare type GroupNode = OperationNode | SchemaNode;
 export {};
