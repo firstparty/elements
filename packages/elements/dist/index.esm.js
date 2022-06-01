@@ -1,13 +1,13 @@
 import { isHttpOperation, isHttpService, Logo, TableOfContents, PoweredByLink, SidebarLayout, ParsedDocs, HttpMethodColors, DeprecatedBadge, TryItWithRequestSamples, Docs, slugify, withRouter, withStyles, withPersistenceBoundary, withMosaicProvider, withQueryClientProvider, useParsedValue, useBundleRefsIntoDocument, NonIdealState, InlineRefResolverProvider } from '@stoplight/elements-core';
+import { NodeType } from '@stoplight/types';
+import defaults from 'lodash/defaults.js';
 import { Flex, Heading, Box, Icon, Tabs, TabList, Tab, TabPanels, TabPanel } from '@stoplight/mosaic';
 import flow from 'lodash/flow.js';
 import * as React from 'react';
 import { useQuery } from 'react-query';
-import { NodeType } from '@stoplight/types';
 import { useLocation, Redirect, Link } from 'react-router-dom';
-import defaults from 'lodash/defaults.js';
 import cn from 'classnames';
-import { safeStringify } from '@stoplight/yaml';
+import { safeStringify, parse } from '@stoplight/yaml';
 import saver from 'file-saver';
 import { transformOas2Service, transformOas2Operation } from '@stoplight/http-spec/oas2';
 import { transformOas3Service, transformOas3Operation } from '@stoplight/http-spec/oas3';
@@ -565,4 +565,13 @@ const APIImpl = props => {
 };
 const API = flow(withRouter, withStyles, withPersistenceBoundary, withMosaicProvider, withQueryClientProvider)(APIImpl);
 
-export { API, computeAPITree };
+const parseDocument = (document) => {
+    const parsedDocument = parse(document);
+    const serviceNode = transformOasToServiceNode(parsedDocument);
+    if (serviceNode !== null) {
+        return computeAPITree(serviceNode);
+    }
+    return serviceNode;
+};
+
+export { API, computeAPITree, parseDocument };

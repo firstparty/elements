@@ -3,13 +3,13 @@
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var elementsCore = require('@stoplight/elements-core');
+var types = require('@stoplight/types');
+var defaults = require('lodash/defaults.js');
 var mosaic = require('@stoplight/mosaic');
 var flow = require('lodash/flow.js');
 var React = require('react');
 var reactQuery = require('react-query');
-var types = require('@stoplight/types');
 var reactRouterDom = require('react-router-dom');
-var defaults = require('lodash/defaults.js');
 var cn = require('classnames');
 var yaml = require('@stoplight/yaml');
 var saver = require('file-saver');
@@ -40,9 +40,9 @@ function _interopNamespace(e) {
   return Object.freeze(n);
 }
 
+var defaults__default = /*#__PURE__*/_interopDefaultLegacy(defaults);
 var flow__default = /*#__PURE__*/_interopDefaultLegacy(flow);
 var React__namespace = /*#__PURE__*/_interopNamespace(React);
-var defaults__default = /*#__PURE__*/_interopDefaultLegacy(defaults);
 var cn__default = /*#__PURE__*/_interopDefaultLegacy(cn);
 var saver__default = /*#__PURE__*/_interopDefaultLegacy(saver);
 var get__default = /*#__PURE__*/_interopDefaultLegacy(get);
@@ -598,5 +598,15 @@ const APIImpl = props => {
 };
 const API = flow__default["default"](elementsCore.withRouter, elementsCore.withStyles, elementsCore.withPersistenceBoundary, elementsCore.withMosaicProvider, elementsCore.withQueryClientProvider)(APIImpl);
 
+const parseDocument = (document) => {
+    const parsedDocument = yaml.parse(document);
+    const serviceNode = transformOasToServiceNode(parsedDocument);
+    if (serviceNode !== null) {
+        return computeAPITree(serviceNode);
+    }
+    return serviceNode;
+};
+
 exports.API = API;
 exports.computeAPITree = computeAPITree;
+exports.parseDocument = parseDocument;
