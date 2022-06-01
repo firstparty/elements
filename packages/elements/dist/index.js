@@ -599,3 +599,4 @@ const APIImpl = props => {
 const API = flow__default["default"](elementsCore.withRouter, elementsCore.withStyles, elementsCore.withPersistenceBoundary, elementsCore.withMosaicProvider, elementsCore.withQueryClientProvider)(APIImpl);
 
 exports.API = API;
+exports.computeAPITree = computeAPITree;

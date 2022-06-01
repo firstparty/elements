@@ -2689,7 +2689,7 @@ const Item = React__namespace.memo(({ depth, isActive, listDecoration = true, id
     return (React__namespace.createElement(mosaic.Flex, { id: id, bg: { default: isActive ? 'primary-tint' : 'canvas-100', hover: isActive ? undefined : 'canvas-200' }, cursor: "pointer", pl: 4 + depth * 4, pr: 4, h: "md", align: "center", userSelect: "none", onClick: onClick, title: title },
         icon,
         React__namespace.createElement(mosaic.Box, { alignItems: "center", flex: 1, mr: meta ? 1.5 : undefined, ml: icon && 1.5, textOverflow: "truncate" }, title),
-        listDecoration ? React__namespace.createElement(mosaic.Flex, { alignItems: "center", fontSize: "xs" }, meta) : ""));
+        listDecoration ? (React__namespace.createElement(mosaic.Flex, { alignItems: "center", fontSize: "xs" }, meta)) : ('')));
 });
 const Node = React__namespace.memo(({ item, depth, listDecoration = true, meta, onClick, onLinkClick = () => { } }) => {
     const activeId = React__namespace.useContext(ActiveIdContext);

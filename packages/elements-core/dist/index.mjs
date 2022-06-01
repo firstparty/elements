@@ -2635,7 +2635,7 @@ const Item = React.memo(({ depth, isActive, listDecoration = true, id, title, me
     return (React.createElement(Flex, { id: id, bg: { default: isActive ? 'primary-tint' : 'canvas-100', hover: isActive ? undefined : 'canvas-200' }, cursor: "pointer", pl: 4 + depth * 4, pr: 4, h: "md", align: "center", userSelect: "none", onClick: onClick, title: title },
         icon,
         React.createElement(Box, { alignItems: "center", flex: 1, mr: meta ? 1.5 : undefined, ml: icon && 1.5, textOverflow: "truncate" }, title),
-        listDecoration ? React.createElement(Flex, { alignItems: "center", fontSize: "xs" }, meta) : ""));
+        listDecoration ? (React.createElement(Flex, { alignItems: "center", fontSize: "xs" }, meta)) : ('')));
 });
 const Node = React.memo(({ item, depth, listDecoration = true, meta, onClick, onLinkClick = () => { } }) => {
     const activeId = React.useContext(ActiveIdContext);

@@ -565,4 +565,4 @@ const APIImpl = props => {
 };
 const API = flow(withRouter, withStyles, withPersistenceBoundary, withMosaicProvider, withQueryClientProvider)(APIImpl);
 
-export { API };
+export { API, computeAPITree };
