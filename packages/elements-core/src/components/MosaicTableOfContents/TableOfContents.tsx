@@ -114,6 +114,7 @@ const GroupItem = React.memo<{
         depth={depth}
         item={item}
         onLinkClick={onLinkClick}
+        listDecoration={false}
         meta={
           listDecoration ? (
             item.meta ? (
@@ -198,9 +199,10 @@ const Item = React.memo<{
   isActive?: boolean;
   id?: string;
   icon?: React.ReactElement<typeof Icon>;
+  listDecoration?: boolean;
   meta?: React.ReactNode;
   onClick?: (e: React.MouseEvent) => void;
-}>(({ depth, isActive, id, title, meta, icon, onClick }) => {
+}>(({ depth, isActive, listDecoration = true, id, title, meta, icon, onClick }) => {
   return (
     <Flex
       id={id}
@@ -221,9 +223,13 @@ const Item = React.memo<{
         {title}
       </Box>
 
-      <Flex alignItems="center" fontSize="xs">
-        {meta}
-      </Flex>
+      {listDecoration ? (
+        <Flex alignItems="center" fontSize="xs">
+          {meta}
+        </Flex>
+      ) : (
+        ''
+      )}
     </Flex>
   );
 });
@@ -233,8 +239,9 @@ const Node = React.memo<{
   depth: number;
   meta?: React.ReactNode;
   onClick?: (e: React.MouseEvent, forceOpen?: boolean) => void;
+  listDecoration?: boolean;
   onLinkClick?(): void;
-}>(({ item, depth, meta, onClick, onLinkClick = () => {} }) => {
+}>(({ item, depth, listDecoration = true, meta, onClick, onLinkClick = () => {} }) => {
   const activeId = React.useContext(ActiveIdContext);
   const isActive = activeId === item.slug || activeId === item.id;
   const LinkComponent = React.useContext(LinkContext);
@@ -274,6 +281,7 @@ const Node = React.memo<{
         }
         meta={meta}
         onClick={handleClick}
+        listDecoration={listDecoration}
       />
     </Box>
   );

@@ -2650,10 +2650,9 @@ const GroupItem = React__namespace.memo(({ item, depth, maxDepthOpenByDefault, o
         return React__namespace.createElement(Group, { depth: depth, item: item, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick });
     }
     else if (isNode(item)) {
-        return (React__namespace.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: listDecoration ?
-                item.meta ? (React__namespace.createElement(mosaic.Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React__namespace.createElement(mosaic.Flex, { alignItems: "center" },
-                    item.version && React__namespace.createElement(Version, { value: item.version }),
-                    React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) : "" }));
+        return (React__namespace.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, listDecoration: false, meta: listDecoration ? (item.meta ? (React__namespace.createElement(mosaic.Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React__namespace.createElement(mosaic.Flex, { alignItems: "center" },
+                item.version && React__namespace.createElement(Version, { value: item.version }),
+                React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] }))))) : ('') }));
     }
     return null;
 });
@@ -2686,13 +2685,13 @@ const Group = React__namespace.memo(({ depth, item, maxDepthOpenByDefault, onLin
                 return React__namespace.createElement(GroupItem, { key: key, item: groupItem, depth: depth + 1, onLinkClick: onLinkClick });
             })));
 });
-const Item = React__namespace.memo(({ depth, isActive, id, title, meta, icon, onClick }) => {
+const Item = React__namespace.memo(({ depth, isActive, listDecoration = true, id, title, meta, icon, onClick }) => {
     return (React__namespace.createElement(mosaic.Flex, { id: id, bg: { default: isActive ? 'primary-tint' : 'canvas-100', hover: isActive ? undefined : 'canvas-200' }, cursor: "pointer", pl: 4 + depth * 4, pr: 4, h: "md", align: "center", userSelect: "none", onClick: onClick, title: title },
         icon,
         React__namespace.createElement(mosaic.Box, { alignItems: "center", flex: 1, mr: meta ? 1.5 : undefined, ml: icon && 1.5, textOverflow: "truncate" }, title),
-        React__namespace.createElement(mosaic.Flex, { alignItems: "center", fontSize: "xs" }, meta)));
+        listDecoration ? React__namespace.createElement(mosaic.Flex, { alignItems: "center", fontSize: "xs" }, meta) : ""));
 });
-const Node = React__namespace.memo(({ item, depth, meta, onClick, onLinkClick = () => { } }) => {
+const Node = React__namespace.memo(({ item, depth, listDecoration = true, meta, onClick, onLinkClick = () => { } }) => {
     const activeId = React__namespace.useContext(ActiveIdContext);
     const isActive = activeId === item.slug || activeId === item.id;
     const LinkComponent = React__namespace.useContext(LinkContext);
@@ -2709,7 +2708,7 @@ const Node = React__namespace.memo(({ item, depth, meta, onClick, onLinkClick = 
         }
     };
     return (React__namespace.createElement(mosaic.Box, { as: LinkComponent, to: item.slug, display: "block", textDecoration: "no-underline", className: "ElementsTableOfContentsItem" },
-        React__namespace.createElement(Item, { id: getHtmlIdFromItemId(item.slug || item.id), isActive: isActive, depth: depth, title: item.title, icon: NODE_TYPE_TITLE_ICON[item.type] && (React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_TITLE_ICON[item.type] })), meta: meta, onClick: handleClick })));
+        React__namespace.createElement(Item, { id: getHtmlIdFromItemId(item.slug || item.id), isActive: isActive, depth: depth, title: item.title, icon: NODE_TYPE_TITLE_ICON[item.type] && (React__namespace.createElement(mosaic.Box, { as: mosaic.Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_TITLE_ICON[item.type] })), meta: meta, onClick: handleClick, listDecoration: listDecoration })));
 });
 const Version = ({ value }) => {
     return (React__namespace.createElement(mosaic.Box, { mr: 2 },

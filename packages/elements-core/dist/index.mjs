@@ -2596,10 +2596,9 @@ const GroupItem = React.memo(({ item, depth, maxDepthOpenByDefault, onLinkClick,
         return React.createElement(Group, { depth: depth, item: item, maxDepthOpenByDefault: maxDepthOpenByDefault, onLinkClick: onLinkClick });
     }
     else if (isNode(item)) {
-        return (React.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, meta: listDecoration ?
-                item.meta ? (React.createElement(Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React.createElement(Flex, { alignItems: "center" },
-                    item.version && React.createElement(Version, { value: item.version }),
-                    React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] })))) : "" }));
+        return (React.createElement(Node, { depth: depth, item: item, onLinkClick: onLinkClick, listDecoration: false, meta: listDecoration ? (item.meta ? (React.createElement(Box, { color: NODE_META_COLOR[item.meta], textTransform: "uppercase", fontWeight: "medium" }, item.meta)) : (NODE_TYPE_META_ICON[item.type] && (React.createElement(Flex, { alignItems: "center" },
+                item.version && React.createElement(Version, { value: item.version }),
+                React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_META_ICON[item.type] }))))) : ('') }));
     }
     return null;
 });
@@ -2632,13 +2631,13 @@ const Group = React.memo(({ depth, item, maxDepthOpenByDefault, onLinkClick = ()
                 return React.createElement(GroupItem, { key: key, item: groupItem, depth: depth + 1, onLinkClick: onLinkClick });
             })));
 });
-const Item = React.memo(({ depth, isActive, id, title, meta, icon, onClick }) => {
+const Item = React.memo(({ depth, isActive, listDecoration = true, id, title, meta, icon, onClick }) => {
     return (React.createElement(Flex, { id: id, bg: { default: isActive ? 'primary-tint' : 'canvas-100', hover: isActive ? undefined : 'canvas-200' }, cursor: "pointer", pl: 4 + depth * 4, pr: 4, h: "md", align: "center", userSelect: "none", onClick: onClick, title: title },
         icon,
         React.createElement(Box, { alignItems: "center", flex: 1, mr: meta ? 1.5 : undefined, ml: icon && 1.5, textOverflow: "truncate" }, title),
-        React.createElement(Flex, { alignItems: "center", fontSize: "xs" }, meta)));
+        listDecoration ? React.createElement(Flex, { alignItems: "center", fontSize: "xs" }, meta) : ""));
 });
-const Node = React.memo(({ item, depth, meta, onClick, onLinkClick = () => { } }) => {
+const Node = React.memo(({ item, depth, listDecoration = true, meta, onClick, onLinkClick = () => { } }) => {
     const activeId = React.useContext(ActiveIdContext);
     const isActive = activeId === item.slug || activeId === item.id;
     const LinkComponent = React.useContext(LinkContext);
@@ -2655,7 +2654,7 @@ const Node = React.memo(({ item, depth, meta, onClick, onLinkClick = () => { } }
         }
     };
     return (React.createElement(Box, { as: LinkComponent, to: item.slug, display: "block", textDecoration: "no-underline", className: "ElementsTableOfContentsItem" },
-        React.createElement(Item, { id: getHtmlIdFromItemId(item.slug || item.id), isActive: isActive, depth: depth, title: item.title, icon: NODE_TYPE_TITLE_ICON[item.type] && (React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_TITLE_ICON[item.type] })), meta: meta, onClick: handleClick })));
+        React.createElement(Item, { id: getHtmlIdFromItemId(item.slug || item.id), isActive: isActive, depth: depth, title: item.title, icon: NODE_TYPE_TITLE_ICON[item.type] && (React.createElement(Box, { as: Icon, color: NODE_TYPE_ICON_COLOR[item.type], icon: NODE_TYPE_TITLE_ICON[item.type] })), meta: meta, onClick: handleClick, listDecoration: listDecoration })));
 });
 const Version = ({ value }) => {
     return (React.createElement(Box, { mr: 2 },
